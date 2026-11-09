@@ -1,0 +1,96 @@
+# ---------------------------------------------------------------------------
+# RTrainer / R Learning Lab
+#
+# Keep these tracked:
+#   Content/                    shipped curriculum JSON, scripts, data, project
+#   tools/build_curriculum.py   curriculum authoring source
+#   src/, tests/                application and test source
+#   README.md, USER_GUIDE.md, TESTING.md, REFERENCES.md, HANDOFF.md
+#
+# Generated, machine-local or very large files are ignored below.
+# ---------------------------------------------------------------------------
+
+# .NET / WPF build output ---------------------------------------------------
+**/[Bb]in/
+**/[Oo]bj/
+**/TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+*.VisualState.xml
+*.nupkg
+*.snupkg
+
+# Visual Studio -------------------------------------------------------------
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+*.VC.db
+*.VC.VC.opendb
+
+# JetBrains Rider / VS Code -------------------------------------------------
+.idea/
+*.sln.iml
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# Build, publish and test artifacts ----------------------------------------
+# These are reproducible and/or contain local machine paths and learner data.
+/artifacts/
+/dist/
+/dist-framework-dependent/
+/Builds/
+/RTrainer.zip
+/RLearningLab-win-x64.zip
+
+# Project-local development tooling ---------------------------------------
+# Extracted R, NuGet package cache and installer downloads. Not distributable.
+/tools/.runtime/
+
+# Python curriculum authoring ----------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# R / RStudio local session files ------------------------------------------
+# StudentStudy.Rproj itself is tracked; only per-user session state is ignored.
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Local logs and temporary files -------------------------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*~
+*.swp
+*.swo
+
+# Office temporary files ----------------------------------------------------
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Windows / macOS shell noise ----------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
