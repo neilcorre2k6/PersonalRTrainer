@@ -1,0 +1,21 @@
+R LEARNING LAB — WINDOWS X64
+
+1. Open RLearningLab.exe in the same folder as this file.
+2. Keep the Content folder next to the executable.
+3. Open Setup & tools in the app. Install R first, then RStudio Desktop,
+   or browse to their existing executables. Both are separate prerequisites.
+4. Read the lesson, open StudentStudy in RStudio, and work in its real .R scripts.
+5. Save in RStudio before checking your work in the companion.
+
+The included .NET runtime means you do not need to install .NET separately.
+R and RStudio are NOT bundled. No extra R packages are required.
+
+Progress, settings and your editable project are stored under:
+%LOCALAPPDATA%\RLearningLab\
+
+Read README.md for setup, directory layout, build commands, limitations,
+backups and the manual checklist. TESTING.md records actual verification.
+REFERENCES.md indexes the official R and Posit documentation sources.
+
+Check My Work runs your saved R code with your Windows user's permissions.
+It is not a security sandbox. Submit only code you knowingly choose to run.
