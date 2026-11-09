@@ -1,0 +1,90 @@
+<Window x:Class="RLearningLab.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="R Learning Lab" Width="1440" Height="960" MinWidth="1024" MinHeight="720" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI" FontSize="15" Foreground="#16343E" Background="#F4F7F6">
+ <Grid Background="#F4F7F6">
+  <Grid.ColumnDefinitions><ColumnDefinition Width="265"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+  <Border Background="#143B45" Grid.Column="0">
+   <DockPanel Margin="20,27,18,18">
+    <StackPanel DockPanel.Dock="Top">
+     <Border Background="#E6F3F0" Width="46" Height="46" CornerRadius="13" HorizontalAlignment="Left" Margin="0,0,0,15"><TextBlock Text="R" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#087E8B"/></Border>
+     <TextBlock Text="R Learning Lab" Foreground="White" FontSize="24" FontWeight="SemiBold"/>
+     <TextBlock Text="Learn here. Create in RStudio." Foreground="#C2D9D9" FontSize="13" Margin="0,5,0,25"/>
+     <TextBlock Text="YOUR LEARNING PATH" Foreground="#A4C7C8" FontSize="11" FontWeight="Bold" Margin="0,0,0,10"/>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Bottom" Margin="0,18,0,0">
+     <TextBlock Text="{Binding CourseProgress}" Foreground="White" FontSize="13" Margin="0,0,0,8"/>
+     <ProgressBar Value="{Binding ProgressPercent, Mode=OneWay}" Maximum="100" Height="5" Foreground="#70D4C6" Background="#38606A" BorderThickness="0"/>
+     <TextBlock Text="At your pace. Every retry is practice." Foreground="#C2D9D9" FontSize="12" Margin="0,12,0,0"/>
+    </StackPanel>
+    <ListBox x:Name="LessonList" ItemsSource="{Binding Lessons}" SelectedItem="{Binding Selected}" SelectionChanged="LessonSelectionChanged" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Course lessons">
+     <ListBox.ItemContainerStyle><Style TargetType="ListBoxItem"><Setter Property="Padding" Value="8,9"/><Setter Property="Margin" Value="0,2"/><Setter Property="Foreground" Value="White"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="SelectedBorder" Background="Transparent" Padding="{TemplateBinding Padding}" CornerRadius="7"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter TargetName="SelectedBorder" Property="Background" Value="#285C65"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="SelectedBorder" Property="BorderBrush" Value="#70D4C6"/><Setter TargetName="SelectedBorder" Property="BorderThickness" Value="1"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="SelectedBorder" Property="BorderBrush" Value="#F3BE74"/><Setter TargetName="SelectedBorder" Property="BorderThickness" Value="2"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style></ListBox.ItemContainerStyle>
+     <ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="22"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="{Binding Marker}" Foreground="#89DCCF" FontSize="17"/><StackPanel Grid.Column="1"><TextBlock Text="{Binding ModuleLabel}" Foreground="#B6D4D5" FontSize="10" Margin="0,0,0,3"/><TextBlock Text="{Binding Title}" Foreground="White" FontSize="14"/></StackPanel></Grid></DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
+   </DockPanel>
+  </Border>
+  <Grid Grid.Column="1" Margin="30,24,30,16">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <DockPanel>
+    <Button Content="_Setup &amp; tools" Click="SetupClicked" DockPanel.Dock="Right" Margin="10,0,0,0" VerticalAlignment="Top"/>
+    <StackPanel><TextBlock Text="{Binding ModuleLabel}" Foreground="#087E8B" FontSize="12" FontWeight="Bold"/><TextBlock Text="{Binding Lesson.Title}" FontSize="31" FontWeight="SemiBold" Margin="0,8,0,7"/><TextBlock Text="{Binding Lesson.Summary}" Foreground="{StaticResource Muted}" FontSize="16"/></StackPanel>
+   </DockPanel>
+   <TextBlock Grid.Row="1" Text="{Binding LessonMeta}" Foreground="{StaticResource Muted}" Margin="0,13,0,17" FontSize="13"/>
+   <WrapPanel Grid.Row="2" Margin="0,0,0,10">
+    <Button Content="Open _Project in RStudio" Style="{StaticResource Primary}" Click="OpenProjectClicked"/>
+    <Button Content="Open _Exercise File" Click="OpenExerciseClicked"/>
+    <Button Content="Project folder" Click="OpenFolderClicked"/>
+    <Button Content="Outputs folder" Click="OpenOutputsClicked"/>
+   </WrapPanel>
+   <TabControl x:Name="LessonTabs" Grid.Row="3" Background="Transparent" BorderThickness="0" BorderBrush="Transparent">
+    <TabItem Header="_Learn">
+     <ScrollViewer x:Name="LearnScroll" VerticalScrollBarVisibility="Auto" Padding="0,20,10,0"><StackPanel x:Name="LearnContent"/></ScrollViewer>
+    </TabItem>
+    <TabItem Header="_Practice &amp; check">
+     <ScrollViewer x:Name="PracticeScroll" VerticalScrollBarVisibility="Auto" Padding="0,20,10,0"><StackPanel>
+      <Border Style="{StaticResource Card}"><StackPanel x:Name="TaskContent"/></Border>
+      <Border Style="{StaticResource Card}"><StackPanel>
+       <TextBlock Text="Check your saved work" Style="{StaticResource Heading}"/>
+       <TextBlock Text="Save in RStudio with Ctrl+S first. Checking runs the file from disk in a fresh R process; it cannot see unsaved edits or old Console objects." Foreground="{StaticResource Muted}" Margin="0,0,0,16"/>
+       <WrapPanel><Button x:Name="CheckButton" Content="_Check My Work" Style="{StaticResource Primary}" Click="CheckClicked"/><Button x:Name="CancelButton" Content="Cancel check" Click="CancelClicked" IsEnabled="False"/></WrapPanel>
+       <ProgressBar x:Name="RunProgress" Height="4" IsIndeterminate="True" Visibility="Collapsed" Margin="0,4,0,14"/>
+       <TextBlock x:Name="FeedbackTitle" FontWeight="SemiBold" FontSize="17" Margin="0,4,0,8" AutomationProperties.LiveSetting="Polite"/>
+       <StackPanel x:Name="FeedbackChecks"/>
+       <Expander Header="Technical error details / process output"><TextBox x:Name="DiagnosticsText" IsReadOnly="True" TextWrapping="Wrap" MaxHeight="210" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" AutomationProperties.Name="Read-only check diagnostics"/></Expander>
+      </StackPanel></Border>
+      <Border Style="{StaticResource Card}"><StackPanel>
+       <TextBlock Text="Observe in RStudio" Style="{StaticResource Heading}"/>
+       <TextBlock Text="These are your observations. Automatic checks cannot verify clicks, chart appearance or the reasoning in your report." Foreground="{StaticResource Muted}" Margin="0,0,0,10"/>
+       <StackPanel x:Name="SelfCheckContent"/>
+       <TextBlock x:Name="CompletionText" FontWeight="SemiBold" Foreground="#087E8B" Margin="0,12,0,0"/>
+      </StackPanel></Border>
+      <Border Style="{StaticResource Card}"><StackPanel>
+       <TextBlock Text="A little help when you need it" Style="{StaticResource Heading}"/>
+       <Button x:Name="HintButton" Content="Show next hint" Click="HintClicked" HorizontalAlignment="Left"/>
+       <StackPanel x:Name="HintContent"/>
+       <Expander x:Name="SolutionExpander" Header="Reveal Example Solution — always available" Expanded="SolutionExpanded"><StackPanel x:Name="SolutionContent"/></Expander>
+       <Expander Header="Common errors and recovery"><StackPanel x:Name="ErrorContent"/></Expander>
+      </StackPanel></Border>
+     </StackPanel></ScrollViewer>
+    </TabItem>
+    <TabItem Header="_Reflect">
+     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,20,10,0"><Border Style="{StaticResource Card}"><StackPanel>
+      <TextBlock Text="Explain it in your own words" Style="{StaticResource Heading}"/>
+      <TextBlock Text="These answers are for learning, not automatic scoring. Your writing saves as you type. You can revise it any time." Foreground="{StaticResource Muted}" Margin="0,0,0,20"/>
+      <StackPanel x:Name="ReflectionContent"/>
+      <TextBlock x:Name="SaveStatus" Foreground="#087E8B" FontSize="13" AutomationProperties.LiveSetting="Polite"/>
+     </StackPanel></Border></ScrollViewer>
+    </TabItem>
+    <TabItem Header="_References">
+     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,20,10,0"><Border Style="{StaticResource Card}"><StackPanel>
+      <TextBlock Text="Go to the source" Style="{StaticResource Heading}"/>
+      <TextBlock Text="Official R and Posit documentation supports this lesson. Links open in your browser. Teaching text, tasks and fictional examples are included offline; you need internet only to visit these references." Foreground="{StaticResource Muted}" Margin="0,0,0,20"/>
+      <StackPanel x:Name="ReferenceContent"/>
+      <TextBlock Text="In RStudio you can also type ?mean (or another function name) in Console to read help for your installed R version. R-devel web references may describe a newer version." Foreground="{StaticResource Muted}" Margin="0,20,0,0"/>
+     </StackPanel></Border></ScrollViewer>
+    </TabItem>
+   </TabControl>
+   <Grid Grid.Row="4" Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock x:Name="StatusText" Text="Ready. Start with the lesson, then practice in RStudio." VerticalAlignment="Center" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,12,0" AutomationProperties.LiveSetting="Polite"/>
+    <StackPanel Grid.Column="1" Orientation="Horizontal"><Button Content="Previous" Click="PreviousClicked" Margin="0,0,8,0"/><Button Content="Next lesson →" Click="NextClicked" Margin="0"/></StackPanel>
+   </Grid>
+  </Grid>
+ </Grid>
+</Window>

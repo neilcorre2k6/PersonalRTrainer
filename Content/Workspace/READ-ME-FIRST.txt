@@ -1,0 +1,1 @@
+Open StudentStudy.Rproj in RStudio. Scripts contains your exercises; Solutions contains examples. Data is fictional. Run scripts from the project root. Outputs holds exported results. The companion never overwrites existing workspace files during startup. Restore datasets only through the app's backed-up reset action.
